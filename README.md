@@ -78,7 +78,5 @@ The workspace contains the following main modules:
 ## Demo
 
 Check out the application demo below:
+![Demo ](media/demo.mp4)
 
-<video controls src="media/demo.mp4" width="100%" type="video/mp4">
-  Your browser does not support the video tag. <a href="media/demo.mp4">Download the demo here</a>.
-</video>

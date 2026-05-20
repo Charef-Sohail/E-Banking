@@ -74,9 +74,9 @@ The workspace contains the following main modules:
    ng serve
    ```
 4. Open your browser and navigate to `http://localhost:4200/`.
-
+<!-- 
 ## Demo
 
 Check out the application demo below:
 ![Demo ](media/demo.mp4)
-
+ -->

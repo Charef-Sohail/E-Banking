@@ -15,6 +15,8 @@ The application follows a standard multi-tier architecture using Spring Boot to 
 - **Account Management**: Support for Current Accounts and Saving Accounts.
 - **Banking Operations**: Perform transactions including Debits, Credits, and Transfers between accounts.
 - **Transaction History**: View the history of operations for any given account.
+- **Agentic AI Chatbot**: Intelligent Telegram bot context built with Spring AI `@Tool` to securely fetch account stats and customer information via natural language.
+- **Analytics Dashboard**: Interactive charts (Pie and Bar charts) summarizing accounts distribution and monthly operations using ChartJS.
 
 ## Project Structure
 
@@ -28,16 +30,18 @@ The workspace contains the following main modules:
 
 ### Backend
 
-- Java / Spring Boot
+- Java 17 / Spring Boot
 - Spring Security (JWT Auth)
 - Spring Data JPA
+- Spring AI (Agentic capabilities)
 - Maven
 
 ### Frontend
 
-- Angular
+- Angular 15+
 - TypeScript
-- HTML/CSS
+- Chart.js & ng2-charts (Dashboard)
+- Bootstrap / HTML / CSS
 
 ## Getting Started
 
@@ -74,9 +78,10 @@ The workspace contains the following main modules:
    ng serve
    ```
 4. Open your browser and navigate to `http://localhost:4200/`.
-<!-- 
+<!--
+
 ## Demo
 
 Check out the application demo below:
 ![Demo ](media/demo.mp4)
- -->
+-->

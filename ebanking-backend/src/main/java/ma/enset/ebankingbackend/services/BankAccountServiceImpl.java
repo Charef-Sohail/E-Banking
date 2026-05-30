@@ -81,6 +81,7 @@ BankAccountServiceImpl implements BankAccountService{
 
 
     @Override
+    @org.springframework.ai.tool.annotation.Tool("List all customers")
     public List<CustomerDTO> listCustomers() {
         List<Customer> customers = customerRepository.findAll();
         List<CustomerDTO> customerDTOS = customers.stream().map(customer -> dtoMapper.fromCustomer(customer))
@@ -96,6 +97,7 @@ BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
+    @org.springframework.ai.tool.annotation.Tool("Get details of a specific bank account by its ID")
     public BankAccountDTO getBankAccount(String accountId) throws BankAccountNotFoundException {
         BankAccount bankAccount = bankAccountRepository.findById(accountId)
                 .orElseThrow(() -> new BankAccountNotFoundException("BankAccount not found"));
@@ -147,6 +149,7 @@ BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
+    @org.springframework.ai.tool.annotation.Tool("Get a list of all bank accounts")
     public List<BankAccountDTO> getBankAccounts(){
         List<BankAccount> bankAccounts = bankAccountRepository.findAll();
         List<BankAccountDTO> bankAccountDTOS = bankAccounts.stream().map(bankAccount ->{
@@ -161,6 +164,7 @@ BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
+    @org.springframework.ai.tool.annotation.Tool("Get details of a specific customer by ID")
     public CustomerDTO getCustomer(long customerId) throws CustomerNotFoundException {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(()-> new CustomerNotFoundException("Customer Not found"));
@@ -208,5 +212,50 @@ BankAccountServiceImpl implements BankAccountService{
     public List<CustomerDTO> searchCustomers(String keyword) {
         List<Customer> customers = customerRepository.findByNameContains(keyword);
         return customers.stream().map(customer ->dtoMapper.fromCustomer(customer)).collect(Collectors.toList());
+    }
+
+    @Override
+    public java.util.Map<String, Object> getAccountsStats() {
+        java.util.List<BankAccount> allAccounts = bankAccountRepository.findAll();
+        double totalBalance = allAccounts.stream().mapToDouble(BankAccount::getBalance).sum();
+        long currentAccountsCount = allAccounts.stream().filter(acc -> acc instanceof CurrentAccount).count();
+        long savingAccountsCount = allAccounts.stream().filter(acc -> acc instanceof SavingAccount).count();
+        
+        java.util.Map<String, Object> stats = new java.util.HashMap<>();
+        stats.put("totalAccounts", allAccounts.size());
+        stats.put("totalBalance", totalBalance);
+        stats.put("currentAccountsCount", currentAccountsCount);
+        stats.put("savingAccountsCount", savingAccountsCount);
+        return stats;
+    }
+
+    @Override
+    public java.util.List<java.util.Map<String, Object>> getMonthlyOperationsStats() {
+        java.util.List<AccountOperation> allOps = accountOperationRepository.findAll();
+        java.util.Map<String, java.util.Map<String, Double>> grouped = new java.util.HashMap<>();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM");
+        for (AccountOperation op : allOps) {
+            if (op.getOperationDate() == null) continue;
+            String month = sdf.format(op.getOperationDate());
+            grouped.putIfAbsent(month, new java.util.HashMap<>(java.util.Map.of("credit", 0.0, "debit", 0.0)));
+            
+            if (op.getType() == OperationType.CREDIT) {
+                grouped.get(month).put("credit", grouped.get(month).get("credit") + op.getAmount());
+            } else if (op.getType() == OperationType.DEBIT) {
+                grouped.get(month).put("debit", grouped.get(month).get("debit") + op.getAmount());
+            }
+        }
+        
+        java.util.List<java.util.Map<String, Object>> result = new java.util.ArrayList<>();
+        grouped.forEach((month, amounts) -> {
+            java.util.Map<String, Object> stat = new java.util.HashMap<>();
+            stat.put("month", month);
+            stat.put("totalCredit", amounts.get("credit"));
+            stat.put("totalDebit", amounts.get("debit"));
+            result.add(stat);
+        });
+        
+        result.sort((m1, m2) -> ((String) m1.get("month")).compareTo((String) m2.get("month")));
+        return result;
     }
 }

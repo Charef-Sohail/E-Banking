@@ -9,6 +9,7 @@ import { AdminTemplate } from './admin-template/admin-template';
 import { authorizationGuard } from './guards/authorization-guard';
 import { NotAuthorized } from './not-authorized/not-authorized';
 import { authenticationGuard } from './guards/authentication-guard';
+import { DashboardComponent } from './dashboard/dashboard';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -16,10 +17,11 @@ export const routes: Routes = [
   {
     path: 'admin', component: AdminTemplate, canActivate: [authenticationGuard] , children: [
       { path: "customers", component: Customers },
-      { path :"accounts", component : AccountsComponent },
-      { path:"new-customer", component: NewCustomer,  canActivate: [authorizationGuard], data:{role:"ADMIN"}},
-      { path :"customer-accounts/:id", component : CustomerAccountsComponent},
-      { path :"notAuthorized", component : NotAuthorized},
+      { path: "accounts", component : AccountsComponent },
+      { path: "dashboard", component : DashboardComponent },
+      { path: "new-customer", component: NewCustomer,  canActivate: [authorizationGuard], data:{role:"ADMIN"}},
+      { path: "customer-accounts/:id", component : CustomerAccountsComponent},
+      { path: "notAuthorized", component : NotAuthorized},
     ]
   },
 

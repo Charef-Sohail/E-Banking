@@ -41,5 +41,14 @@ public class BankAccountRestAPI {
         return bankAccountService.getAccountHistory(accountId, page, size);
     }
 
+    @GetMapping("/accounts/stats")
+    public java.util.Map<String, Object> getAccountsStats() {
+        return bankAccountService.getAccountsStats();
+    }
+
+    @GetMapping("/operations/stats/monthly")
+    public List<java.util.Map<String, Object>> getMonthlyOperationsStats() {
+        return bankAccountService.getMonthlyOperationsStats();
+    }
 
 }

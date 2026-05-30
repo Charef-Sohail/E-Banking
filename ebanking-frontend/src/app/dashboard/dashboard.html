@@ -1,23 +1,23 @@
 <div class="container mt-4">
   <h2>Dashboard</h2>
-  
+
   <div class="row" *ngIf="accountsStats">
     <div class="col-md-4">
-        <div class="card text-white bg-primary mb-3">
-          <div class="card-header">Total Accounts</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ accountsStats.totalAccounts }}</h5>
-          </div>
+      <div class="card text-white bg-primary mb-3">
+        <div class="card-header">Total Accounts</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ accountsStats.totalAccounts }}</h5>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card text-white bg-success mb-3">
-          <div class="card-header">Total Balance</div>
-          <div class="card-body">
-            <h5 class="card-title">{{ accountsStats.totalBalance | currency:'USD' }}</h5>
-          </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header">Total Balance</div>
+        <div class="card-body">
+          <h5 class="card-title">{{ accountsStats.totalBalance | currency: 'USD' }}</h5>
         </div>
       </div>
+    </div>
   </div>
 
   <div class="row mt-4">
@@ -25,26 +25,26 @@
       <div class="card">
         <div class="card-header">Accounts Distribution</div>
         <div class="card-body">
-          <canvas baseChart
-                  [data]="pieChartData"
-                  [type]="pieChartType"
-                  [options]="pieChartOptions">
+          <canvas baseChart [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions">
           </canvas>
         </div>
       </div>
     </div>
-    
+
     <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">Monthly Operations (Credits/Debits)</div>
-          <div class="card-body">
-            <canvas baseChart *ngIf="chartReady"
-                    [data]="barChartData"
-                    [options]="barChartOptions"
-                    [type]="barChartType">
-            </canvas>
-          </div>
+      <div class="card">
+        <div class="card-header">Monthly Operations (Credits/Debits)</div>
+        <div class="card-body">
+          <canvas
+            baseChart
+            *ngIf="chartReady"
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="barChartType"
+          >
+          </canvas>
         </div>
       </div>
+    </div>
   </div>
 </div>

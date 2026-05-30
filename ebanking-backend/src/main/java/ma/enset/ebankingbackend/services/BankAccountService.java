@@ -10,21 +10,33 @@ import java.util.List;
 
 public interface BankAccountService {
     CustomerDTO saveCustomer(CustomerDTO customerDTO);
+
     List<CustomerDTO> listCustomers();
+
     CustomerDTO getCustomer(long customerId) throws CustomerNotFoundException;
+
     CustomerDTO updateCustomer(CustomerDTO customerDTO);
+
     void deleteCustomer(Long customerId);
 
+    CurrentBankAccountDTO saveCurrentBankAccount(double initialBalance, double overDraft, Long customerId)
+            throws CustomerNotFoundException;
 
+    SavingBankAccountDTO saveSavingBankAccount(double initialBalance, double interestRate, Long customerId)
+            throws CustomerNotFoundException;
 
-    CurrentBankAccountDTO saveCurrentBankAccount(double initialBalance, double overDraft, Long customerId) throws CustomerNotFoundException;
-    SavingBankAccountDTO saveSavingBankAccount(double initialBalance, double interestRate, Long customerId) throws CustomerNotFoundException;
     BankAccountDTO getBankAccount(String accountId) throws BankAccountNotFoundException;
-    void debit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException;
-    void credit(String accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficientException;
-    void transfer(String accountIdSource, String accountIdDestination, double amount) throws BankAccountNotFoundException, BalanceNotSufficientException;
-    List<BankAccountDTO> getBankAccounts();
 
+    void debit(String accountId, double amount, String description)
+            throws BankAccountNotFoundException, BalanceNotSufficientException;
+
+    void credit(String accountId, double amount, String description)
+            throws BankAccountNotFoundException, BalanceNotSufficientException;
+
+    void transfer(String accountIdSource, String accountIdDestination, double amount)
+            throws BankAccountNotFoundException, BalanceNotSufficientException;
+
+    List<BankAccountDTO> getBankAccounts();
 
     List<AccountOperationDTO> accountHistory(String accountId);
 
@@ -33,5 +45,6 @@ public interface BankAccountService {
     List<CustomerDTO> searchCustomers(String keyword);
 
     java.util.Map<String, Object> getAccountsStats();
+
     java.util.List<java.util.Map<String, Object>> getMonthlyOperationsStats();
 }

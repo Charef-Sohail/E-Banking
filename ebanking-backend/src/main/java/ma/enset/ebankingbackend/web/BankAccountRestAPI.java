@@ -14,12 +14,13 @@ import java.util.List;
 public class BankAccountRestAPI {
     private BankAccountService bankAccountService;
 
-    public BankAccountRestAPI (BankAccountService bankAccountService){
+    public BankAccountRestAPI(BankAccountService bankAccountService) {
         this.bankAccountService = bankAccountService;
     }
 
     @GetMapping("/accounts/{accountId}")
-    public BankAccountDTO getBankAccount(@PathVariable(name="id") String accountId) throws BankAccountNotFoundException {
+    public BankAccountDTO getBankAccount(@PathVariable(name = "id") String accountId)
+            throws BankAccountNotFoundException {
         return bankAccountService.getBankAccount(accountId);
     }
 
@@ -28,16 +29,15 @@ public class BankAccountRestAPI {
         return bankAccountService.getBankAccounts();
     }
 
-
     @GetMapping("/accounts/{id}/operations")
-    public List<AccountOperationDTO> getHistory(@PathVariable(name="id") String accountId){
+    public List<AccountOperationDTO> getHistory(@PathVariable(name = "id") String accountId) {
         return bankAccountService.accountHistory(accountId);
     }
 
     @GetMapping("/accounts/{id}/pageOperations")
-    public AccountHistoryDTO getAccountHistory(@PathVariable(name="id") String accountId,
-                                               @RequestParam(name="page", defaultValue = "0") int page,
-                                               @RequestParam(name="size", defaultValue = "5") int size) throws BankAccountNotFoundException {
+    public AccountHistoryDTO getAccountHistory(@PathVariable(name = "id") String accountId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size) throws BankAccountNotFoundException {
         return bankAccountService.getAccountHistory(accountId, page, size);
     }
 
